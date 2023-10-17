@@ -10,8 +10,9 @@ from objects.enemy import *
 class Weapon:
     def __init__(self, context: BuildContext):
         self.context = context
-        self.damage = 40
-        self.speed = 30
+        self.damage = 20
+        self.max_speed = 30
+        self.speed = self.max_speed
         self.orientation_degrees = 90.0
         self.update_position()
         self.is_shooting = False
@@ -78,7 +79,7 @@ class Weapon:
     def draw_laser(self):
         'draw the laser originating from the weapon and shooting outwards'
         glColor3ub(252, 253, 235)
-        glLineWidth(3.0 + self.damage // 50)
+        glLineWidth(self.damage / 20)
         
         glBegin(GL_LINES)
 
@@ -87,9 +88,8 @@ class Weapon:
 
         laser_end_x, laser_end_y = 0, 0
         if self.shooting_enemy is not None:
-            distance = sqrt(self.shooting_enemy.x ** 2 + self.shooting_enemy.y ** 2)
-            laser_end_x = distance * cos(self.orientation_degrees * (pi / 180.0))
-            laser_end_y = distance * sin(self.orientation_degrees * (pi / 180.0))
+            laser_end_x = self.shooting_enemy.distance() * cos(self.orientation_degrees * (pi / 180.0))
+            laser_end_y = self.shooting_enemy.distance() * sin(self.orientation_degrees * (pi / 180.0))
         else:
             laser_end_x = (self.context.dome_radius + 4000) * cos(self.weapon_orientation_radians)
             laser_end_y = (self.context.dome_radius + 4000) * sin(self.weapon_orientation_radians)
@@ -105,8 +105,8 @@ class Weapon:
         'move the weapon to the left'
         self.orientation_degrees += self.speed / self.context.fps
         
-        if self.orientation_degrees >= 179:
-            self.orientation_degrees = 179
+        if self.orientation_degrees >= 181:
+            self.orientation_degrees = 181
          
         self.update_position()
 
@@ -114,24 +114,24 @@ class Weapon:
         'move the weapon to the right'
         self.orientation_degrees -= self.speed / self.context.fps
 
-        if self.orientation_degrees <= 1:
-            self.orientation_degrees = 1
+        if self.orientation_degrees <= -1:
+            self.orientation_degrees = -1
 
         self.update_position()
 
     def shoot(self):
         'shoot'
         self.is_shooting = True
-        self.speed = 30 * 0.4
+        self.speed = self.max_speed * 0.4
 
     def stop_shooting(self):
         'stop the weapon from shooting'
         self.is_shooting = False
-        self.speed = 30
+        self.speed = self.max_speed
     
     def is_shooting_enemy(self, enemy: Enemy):
-        # if self.is_shooting is False or (self.shooting_enemy is not None and self.shooting_enemy.id is not enemy.id):
-        if self.is_shooting is False or self.shooting_enemy is not None:      
+        if self.is_shooting is False or (self.shooting_enemy is not None and self.shooting_enemy.id is not enemy.id):
+        # if self.is_shooting is False or self.shooting_enemy is not None:      
             return
 
         laser_x = enemy.distance() * cos(self.orientation_degrees * (pi / 180.0))
@@ -146,11 +146,12 @@ class Weapon:
         # glEnd()
         # glPopMatrix()
 
-        if laser_x <= enemy.x + enemy.size and laser_x >= enemy.x - enemy.size and laser_y <= enemy.y + enemy.size and laser_y >= enemy.y - enemy.size:
+        if laser_x <= enemy.x + enemy.get_size() and laser_x >= enemy.x - enemy.get_size() and laser_y <= enemy.y + enemy.get_size() and laser_y >= enemy.y - enemy.get_size():
             self.shooting_enemy = enemy
             enemy.take_damage(self.damage / self.context.fps)
-            if enemy.is_dead():
-                self.context.remove_enemy(enemy.id)
-                self.shooting_enemy = None
-        else:
-            self.shooting_enemy = None
+            
+            if not enemy.is_dead():
+                return
+            
+            self.context.remove_enemy(enemy.id)
+        self.shooting_enemy = None

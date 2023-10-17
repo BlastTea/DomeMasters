@@ -11,7 +11,6 @@ from objects.dome import *
 from objects.enemy import *
 
 context = BuildContext()
-context.start_next_wave()
 
 def draw():
     context.dome.draw()
@@ -39,10 +38,9 @@ def showScreen():
     draw()
     for enemy in context.current_enemies:
         enemy.move_towards_dome()
-    update_movement()
 
-    left_closes_enemy = sorted(filter(lambda e: e.distance() <= 0, context.current_enemies), key=lambda e: e.distance())
-    right_closes_enemy = sorted(filter(lambda e: e.distance() >= 0, context.current_enemies), key=lambda e: e.distance())
+    left_closes_enemy = sorted(filter(lambda e: e.x <= 0, context.current_enemies), key=lambda e: e.distance())
+    right_closes_enemy = sorted(filter(lambda e: e.x >= 0, context.current_enemies), key=lambda e: e.distance())
 
     if len(left_closes_enemy) > 0:
         context.dome.weapon.is_shooting_enemy(left_closes_enemy[0])
@@ -50,6 +48,10 @@ def showScreen():
         context.dome.weapon.is_shooting_enemy(right_closes_enemy[0])
     if context.current_state is context.GAMEPLAY:
         context.show_hud()
+
+    update_movement()
+
+    context.start_next_wave()
 
     glutSwapBuffers()
 

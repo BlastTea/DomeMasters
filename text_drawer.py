@@ -3,7 +3,6 @@ from OpenGL.GLUT import *
 from OpenGL.GL import *
 from math import *
 
-
 def drawText(text, x, y, text_color=(255, 255, 255)):
     glPushMatrix()
     font_style = glut.GLUT_BITMAP_HELVETICA_18
@@ -16,7 +15,6 @@ def drawText(text, x, y, text_color=(255, 255, 255)):
         else:
             glut.glutBitmapCharacter(font_style, ord(i))
     glPopMatrix()
-
 
 def draw_letter_D(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glPushMatrix()
@@ -40,7 +38,6 @@ def draw_letter_D(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glEnd()
     glPopMatrix()
 
-
 def draw_letter_O(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glPushMatrix()
     glColor3ub(color[0], color[1], color[2])
@@ -56,7 +53,6 @@ def draw_letter_O(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glEnd()
     glPopMatrix()
 
-
 def draw_letter_M(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glPushMatrix()
     glColor3ub(color[0], color[1], color[2])
@@ -66,7 +62,6 @@ def draw_letter_M(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     glVertex2f()
     glEnd()
     glPopMatrix()
-
 
 def draw_letter_E(x, y, color=(255, 255, 255), scale=1.0, thickness=50):
     pass
