@@ -16,7 +16,7 @@ class BuildContext:
         from objects.dome import Dome
         self.w = 800
         self.h = 600
-        self.fps = 60
+        self.frame_per_second = 60
         self.dome_radius = 200
 
         self.movement_keys = set()
@@ -45,7 +45,7 @@ class BuildContext:
     def tick_next_wave(self):
         from objects.enemy import Enemy
 
-        self.spawn_cooldown_elapsed += 1 / self.fps
+        self.spawn_cooldown_elapsed += 1 / self.frame_per_second
         
         if self.total_enemy == 0 and len(self.current_enemies) == 0:
             self.wave_counter += 1
@@ -59,7 +59,7 @@ class BuildContext:
 
 
     def draw_background(self):
-        if self.current_state is self.TITLE_SCREEN or self.current_state is self.ANIMATING_TO_TITLE_SCREEN:
+        if self.current_state is self.TITLE_SCREEN or self.current_state is self.ANIMATING_TO_TITLE_SCREEN or self.current_state is self.ANIMATING_TO_GAMEPLAY:
             # above the sky
             glPushMatrix()
             glColor3ub(190, 117, 61)

@@ -68,7 +68,7 @@ class Enemy:
                 self.is_moving = True
                 self.move_cooldown_elapsed = 0.0
             else:
-                self.move_cooldown_elapsed += 1 / self.context.fps
+                self.move_cooldown_elapsed += 1 / self.context.frame_per_second
                 return
 
         if self.x + self.get_size() < -self.context.dome_radius or self.x - self.get_size() > self.context.dome_radius:
@@ -80,7 +80,7 @@ class Enemy:
             else:
                 jump_height = self.jump_height * sin(jump_progress * pi) 
                 self.y = self.initial_y + jump_height
-                self.jump_elapsed_time += 1 / self.context.fps
+                self.jump_elapsed_time += 1 / self.context.frame_per_second
 
         if self.x + self.get_size() <= -self.context.dome_radius + 10.0:
             angle_radians = atan2(self.y - self.get_size(), self.x + self.get_size())
@@ -104,11 +104,11 @@ class Enemy:
                 self.is_going_back = True
             
             if self.is_going_back:
-                self.x -= self.speed / self.context.fps
+                self.x -= self.speed / self.context.frame_per_second
                 if self.y == self.initial_y:
                     self.is_going_back = False
             else:
-                self.x += self.speed / self.context.fps
+                self.x += self.speed / self.context.frame_per_second
         elif self.x - self.get_size() >= self.context.dome_radius - 10.0:
             angle_radians = atan2(self.y - self.get_size(), self.x - self.get_size())
             x_dome_hitbox = self.context.dome_radius * cos(angle_radians)
@@ -119,11 +119,11 @@ class Enemy:
                 self.is_going_back = True
             
             if self.is_going_back:
-                self.x += self.speed / self.context.fps
+                self.x += self.speed / self.context.frame_per_second
                 if self.y == self.initial_y:
                     self.is_going_back = False
             else:
-                self.x -= self.speed / self.context.fps
+                self.x -= self.speed / self.context.frame_per_second
 
     def distance(self):
         return sqrt(self.x ** 2 + self.y ** 2)

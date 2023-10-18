@@ -103,7 +103,7 @@ class Weapon:
 
     def move_left(self):
         'move the weapon to the left'
-        self.orientation_degrees += self.speed / self.context.fps
+        self.orientation_degrees += self.speed / self.context.frame_per_second
         
         if self.orientation_degrees >= 181:
             self.orientation_degrees = 181
@@ -112,7 +112,7 @@ class Weapon:
 
     def move_right(self):
         'move the weapon to the right'
-        self.orientation_degrees -= self.speed / self.context.fps
+        self.orientation_degrees -= self.speed / self.context.frame_per_second
 
         if self.orientation_degrees <= -1:
             self.orientation_degrees = -1
@@ -148,7 +148,7 @@ class Weapon:
 
         if laser_x <= enemy.x + enemy.get_size() and laser_x >= enemy.x - enemy.get_size() and laser_y <= enemy.y + enemy.get_size() and laser_y >= enemy.y - enemy.get_size():
             self.shooting_enemy = enemy
-            enemy.take_damage(self.damage / self.context.fps)
+            enemy.take_damage(self.damage / self.context.frame_per_second)
             
             if not enemy.is_dead():
                 return

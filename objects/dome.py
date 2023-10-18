@@ -39,8 +39,6 @@ class Dome:
     def take_damage(self, damage):
         self.health -= damage
         if self.health <= 0:
+            self.context.current_state = self.context.GAME_OVER
             self.health = 0
-    
-    def is_game_over(self):
-        return self.health <= 0
         
