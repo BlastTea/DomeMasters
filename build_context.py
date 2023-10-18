@@ -10,6 +10,7 @@ class BuildContext:
     ANIMATING_TO_TITLE_SCREEN = 1
     GAMEPLAY = 2
     ANIMATING_TO_GAMEPLAY = 3
+    GAME_OVER = 4
 
     def __init__(self):
         from objects.dome import Dome
@@ -24,11 +25,11 @@ class BuildContext:
         self.wave_counter = 1
         self.kill_counter = 0
 
-        # self.camera_position = [0, -self.h * 2, 0]
-        self.camera_position = [0, 0, 0]
+        self.camera_position = [0, -self.h * 2, 0]
+        # self.camera_position = [0, 0, 0]
 
-        # self.current_state = self.TITLE_SCREEN
-        self.current_state = self.GAMEPLAY
+        self.current_state = self.TITLE_SCREEN
+        # self.current_state = self.GAMEPLAY
 
         self.spawn_cooldown = 0.0
         self.spawn_cooldown_elapsed = 0.0
@@ -41,7 +42,7 @@ class BuildContext:
         self.kill_counter += 1
         self.current_enemies = list(filter(lambda e: e.id is not id, self.current_enemies))
 
-    def start_next_wave(self):
+    def tick_next_wave(self):
         from objects.enemy import Enemy
 
         self.spawn_cooldown_elapsed += 1 / self.fps
@@ -74,9 +75,26 @@ class BuildContext:
             thickness = 60
             scale = 0.4
 
-            draw_letter_D(-400, self.h * 2, color, scale, thickness)
-            draw_letter_O(-200, self.h * 2, color, scale, thickness)
-            # draw_letter_M(0, self.h * 2, color, scale, thickness)
+            draw_letter_D(-700, self.h * 2 + 200, color, scale, thickness)
+            draw_letter_O(-500, self.h * 2 + 200, color, scale, thickness)
+            draw_letter_M(-300, self.h * 2 + 200, color, scale, thickness)
+            draw_letter_E(-100, self.h * 2 + 200, color, scale, thickness)
+
+            draw_letter_M(-600, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_A(-400, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_S(-230, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_T(-70, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_E(130, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_R(400, self.h * 2 - 100, color, scale, thickness)
+            draw_letter_S(600, self.h * 2 - 100, color, scale, thickness)
+
+            # glPushMatrix()
+            # glBegin(GL_QUADS)
+            # glVertex2f()
+            # glEnd()
+            # glPopMatrix()
+
+            drawText('Play', -100, self.h * 2 - 400)
 
         # Sky
         glPushMatrix()
@@ -98,7 +116,7 @@ class BuildContext:
         glEnd()
         glPopMatrix()
 
-    def show_hud(self):
+    def draw_hud(self):
         # kill counter
         drawText(f'{self.kill_counter}', -self.w + 20, -self.h + 60)
         

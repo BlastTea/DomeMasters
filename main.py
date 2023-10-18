@@ -26,6 +26,13 @@ def iterate():
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
+    # context.camera_position[1] -= 1 / context.fps
+    if context.current_state == context.ANIMATING_TO_GAMEPLAY and context.camera_position[1] > 0:
+        context.camera_position[1] -= 1 / context.fps
+    elif context.current_state == context.ANIMATING_TO_GAMEPLAY and context.camera_position[1] <= 0:
+        context.camera_position[1] = 0
+        context.current_state = context.GAMEPLAY
+
     glTranslatef(context.camera_position[0], context.camera_position[1], context.camera_position[2])
 
 def showScreen():
@@ -47,11 +54,11 @@ def showScreen():
     if len(right_closes_enemy) > 0:
         context.dome.weapon.is_shooting_enemy(right_closes_enemy[0])
     if context.current_state is context.GAMEPLAY:
-        context.show_hud()
+        context.draw_hud()
 
     update_movement()
 
-    context.start_next_wave()
+    context.tick_next_wave()
 
     glutSwapBuffers()
 
@@ -93,6 +100,10 @@ def update_movement():
         elif key == GLUT_KEY_RIGHT:
             context.dome.weapon.move_right()
 
+def mouse(button, state, x, y):
+    if button == GLUT_LEFT_BUTTON and state == GLUT_UP and x >= 352 and x <= 384 and y >= 487 and y <= 500 and context.current_state == context.TITLE_SCREEN:
+        context.current_state = context.ANIMATING_TO_GAMEPLAY
+
 glutInit()
 glutInitDisplayMode(GLUT_RGBA)
 glutInitWindowSize(context.w, context.h)
@@ -104,4 +115,5 @@ glutReshapeFunc(reshape)
 glutKeyboardFunc(keyboard)
 glutKeyboardUpFunc(keyboard_up)
 glutSpecialFunc(special_keyboard)
+glutMouseFunc(mouse)
 glutMainLoop()
