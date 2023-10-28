@@ -79,7 +79,7 @@ class Weapon:
     def draw_laser(self):
         'draw the laser originating from the weapon and shooting outwards'
         glColor3ub(252, 253, 235)
-        glLineWidth(self.damage / 20)
+        glLineWidth(self.damage / 10)
         
         glBegin(GL_LINES)
 
@@ -146,7 +146,7 @@ class Weapon:
         # glEnd()
         # glPopMatrix()
 
-        if laser_x <= enemy.x + enemy.get_size() and laser_x >= enemy.x - enemy.get_size() and laser_y <= enemy.y + enemy.get_size() and laser_y >= enemy.y - enemy.get_size():
+        if laser_x <= enemy.x + enemy.size.width / 2 * enemy.scale and laser_x >= enemy.x - enemy.size.width / 2 * enemy.scale and laser_y <= enemy.y + enemy.size.height / 2 * enemy.scale and laser_y >= enemy.y - enemy.size.height / 2 * enemy.scale:
             self.shooting_enemy = enemy
             enemy.take_damage(self.damage / self.context.frame_per_second)
             

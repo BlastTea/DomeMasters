@@ -4,7 +4,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from math import *
-from text_drawer import *
+from user_interfaces.text_drawer import *
 
 from build_context import *
 from objects.dome import *
@@ -102,6 +102,7 @@ def update_movement():
             context.dome.weapon.move_right()
 
 def mouse(button, state, x, y):
+    print(context.button_play.on_click(x, y))
     if button == GLUT_LEFT_BUTTON and state == GLUT_UP and x >= 352 and x <= 384 and y >= 487 and y <= 500 and context.current_state == context.TITLE_SCREEN:
         context.current_state = context.ANIMATING_TO_GAMEPLAY
 

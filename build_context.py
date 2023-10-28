@@ -3,7 +3,8 @@ import random
 from OpenGL.GL import *
 from math import *
 
-from text_drawer import *
+from user_interfaces.text_drawer import *
+from size import *
 
 class BuildContext:
     TITLE_SCREEN = 0
@@ -14,6 +15,7 @@ class BuildContext:
 
     def __init__(self):
         from objects.dome import Dome
+        from user_interfaces.button import Button
         self.w = 800
         self.h = 600
         self.frame_per_second = 60
@@ -32,11 +34,13 @@ class BuildContext:
         # self.current_state = self.GAMEPLAY
 
         self.spawn_cooldown = 0.0
-        self.spawn_cooldown_elapsed = 0.0
+        self.spawn_cooldown_elapsed_time = 0.0
 
         self.total_enemy = 0
 
         self.dome = Dome(self)
+
+        self.button_play = Button(self, 'Play', Size(40, 40), -100, self.h * 2 - 400)
 
     def remove_enemy(self, id):
         self.kill_counter += 1
@@ -45,20 +49,21 @@ class BuildContext:
     def tick_next_wave(self):
         from objects.enemy import Enemy
 
-        self.spawn_cooldown_elapsed += 1 / self.frame_per_second
+        self.spawn_cooldown_elapsed_time += 1 / self.frame_per_second
         
         if self.total_enemy == 0 and len(self.current_enemies) == 0:
             self.wave_counter += 1
             self.total_enemy = self.wave_counter + random.randint(1, self.wave_counter)
 
-        if self.spawn_cooldown_elapsed >= self.spawn_cooldown and self.total_enemy > 0:
-            self.spawn_cooldown_elapsed = 0.0
+        if self.spawn_cooldown_elapsed_time >= self.spawn_cooldown and self.total_enemy > 0:
+            self.spawn_cooldown_elapsed_time = 0.0
             self.spawn_cooldown = random.random()
             self.total_enemy -= 1
             self.current_enemies.append(Enemy(self, 0 if len(self.current_enemies) == 0 else len(self.current_enemies) - 1, self.w if random.choice([True, False]) else -self.w - 150.0))
 
 
     def draw_background(self):
+        
         if self.current_state is self.TITLE_SCREEN or self.current_state is self.ANIMATING_TO_TITLE_SCREEN or self.current_state is self.ANIMATING_TO_GAMEPLAY:
             # above the sky
             glPushMatrix()
@@ -88,13 +93,7 @@ class BuildContext:
             draw_letter_R(400, self.h * 2 - 100, color, scale, thickness)
             draw_letter_S(600, self.h * 2 - 100, color, scale, thickness)
 
-            # glPushMatrix()
-            # glBegin(GL_QUADS)
-            # glVertex2f()
-            # glEnd()
-            # glPopMatrix()
-
-            drawText('Play', -100, self.h * 2 - 400)
+            self.button_play.draw()
 
         # Sky
         glPushMatrix()
