@@ -4,7 +4,8 @@ from OpenGL.GL import *
 from math import *
 
 from user_interfaces.text_drawer import *
-from size import *
+from utils.size import *
+from utils.offset import *
 
 class BuildContext:
     TITLE_SCREEN = 0
@@ -40,7 +41,7 @@ class BuildContext:
 
         self.dome = Dome(self)
 
-        self.button_play = Button(self, 'Play', Size(40, 40), -100, self.h * 2 - 400)
+        self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
 
     def remove_enemy(self, id):
         self.kill_counter += 1
@@ -59,7 +60,7 @@ class BuildContext:
             self.spawn_cooldown_elapsed_time = 0.0
             self.spawn_cooldown = random.random()
             self.total_enemy -= 1
-            self.current_enemies.append(Enemy(self, 0 if len(self.current_enemies) == 0 else len(self.current_enemies) - 1, self.w if random.choice([True, False]) else -self.w - 150.0))
+            self.current_enemies.append(Enemy(self, len(self.current_enemies), self.w if random.choice([True, False]) else -self.w - 150.0))
 
 
     def draw_background(self):

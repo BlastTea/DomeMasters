@@ -4,13 +4,14 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from math import *
-from user_interfaces.text_drawer import *
 
 from build_context import *
 from objects.dome import *
 from objects.enemy import *
 
 context = BuildContext()
+
+# print(f'hello? : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782} and {0.0 <= 23.11951371597268 <= 60.0} : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782 and 0.0 <= 23.11951371597268 <= 60.0}')
 
 def draw():
     context.dome.draw()
@@ -49,12 +50,14 @@ def showScreen():
             enemy.move_towards_dome()
 
         left_closes_enemy = sorted(filter(lambda e: e.x <= 0, context.current_enemies), key=lambda e: e.distance())
-        right_closes_enemy = sorted(filter(lambda e: e.x >= 0, context.current_enemies), key=lambda e: e.distance())
+        is_shooting_enemy = False
 
         if len(left_closes_enemy) > 0:
-            context.dome.weapon.is_shooting_enemy(left_closes_enemy[0])
-        if len(right_closes_enemy) > 0:
-            context.dome.weapon.is_shooting_enemy(right_closes_enemy[0])
+            is_shooting_enemy = context.dome.weapon.is_shooting_enemy(left_closes_enemy[0])
+        if not is_shooting_enemy:
+            right_closes_enemy = sorted(filter(lambda e: e.x >= 0, context.current_enemies), key=lambda e: e.distance())
+            if len(right_closes_enemy) > 0:
+                context.dome.weapon.is_shooting_enemy(right_closes_enemy[0])
         update_movement()
         context.tick_next_wave()
     
@@ -102,8 +105,11 @@ def update_movement():
             context.dome.weapon.move_right()
 
 def mouse(button, state, x, y):
-    print(context.button_play.on_click(x, y))
-    if button == GLUT_LEFT_BUTTON and state == GLUT_UP and x >= 352 and x <= 384 and y >= 487 and y <= 500 and context.current_state == context.TITLE_SCREEN:
+    # print(f'{x}, {y}', context.button_play.is_on_click(x, y))
+    # if button == GLUT_LEFT_BUTTON and state == GLUT_UP and x >= 352 and x <= 384 and y >= 487 and y <= 500 and context.current_state == context.TITLE_SCREEN:
+    #     context.current_state = context.ANIMATING_TO_GAMEPLAY
+
+    if context.button_play.is_on_click(x, y):
         context.current_state = context.ANIMATING_TO_GAMEPLAY
 
 glutInit()

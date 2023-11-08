@@ -24,6 +24,9 @@ class Enemy:
         self.is_moving = True
         self.is_going_back = False
 
+    def __str__(self) -> str:
+        return f'Enemy({self.id, self.distance()})'
+
     def draw(self):
         glPushMatrix()
 
