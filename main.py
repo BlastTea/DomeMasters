@@ -11,8 +11,6 @@ from objects.enemy import *
 
 context = BuildContext()
 
-# print(f'hello? : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782} and {0.0 <= 23.11951371597268 <= 60.0} : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782 and 0.0 <= 23.11951371597268 <= 60.0}')
-
 def draw():
     context.dome.draw()
     for enemy in context.current_enemies:
