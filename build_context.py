@@ -13,6 +13,7 @@ class BuildContext:
     GAMEPLAY = 2
     ANIMATING_TO_GAMEPLAY = 3
     GAME_OVER = 4
+    PAUSED = 5
 
     def __init__(self):
         from objects.dome import Dome

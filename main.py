@@ -38,11 +38,6 @@ def iterate():
 def showScreen():
     if context.current_state is context.GAME_OVER:
         print('Oy mate, it\'s game over, get out from here!')
-    
-    if context.is_paused:
-        print('Permainan di-Pause')
-        glutSwapBuffers()
-        return
     start_time = time.time()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -87,9 +82,6 @@ def keyboard(key, x, y):
     if key == b' ':
         context.dome.weapon.shoot()
 
-    if key == b'p' or key == b'P':
-        toggle_pause()
-
 def keyboard_up(key, x, y):
     if key == b' ':
         context.dome.weapon.stop_shooting()
@@ -111,9 +103,6 @@ def update_movement():
             context.dome.weapon.move_left()
         elif key == GLUT_KEY_RIGHT:
             context.dome.weapon.move_right()
-
-def toggle_pause():
-    context.is_paused = not context.is_paused
 
 def mouse(button, state, x, y):
     # print(f'{x}, {y}', context.button_play.is_on_click(x, y))
