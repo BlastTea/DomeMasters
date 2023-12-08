@@ -13,6 +13,7 @@ class BuildContext:
     GAMEPLAY = 2
     ANIMATING_TO_GAMEPLAY = 3
     GAME_OVER = 4
+    PAUSED = 5
 
     def __init__(self):
         from objects.dome import Dome
@@ -42,8 +43,6 @@ class BuildContext:
         self.dome = Dome(self)
 
         self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
-
-        self.score = 0
 
     def remove_enemy(self, id):
         self.kill_counter += 1
