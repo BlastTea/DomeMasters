@@ -111,6 +111,8 @@ def update_movement():
 def mouse(button, state, x, y):
     if context.button_play.is_on_click(x, y):
         context.current_state = context.ANIMATING_TO_GAMEPLAY
+    if context.button_restart.is_on_click(x, y):
+        context.restart()
 
 glutInit()
 glutInitDisplayMode(GLUT_RGBA)

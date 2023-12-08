@@ -29,10 +29,8 @@ class BuildContext:
         self.kill_counter = 0
 
         self.camera_position = [0, -self.h * 2, 0]
-        # self.camera_position = [0, 0, 0]
 
         self.current_state = self.TITLE_SCREEN
-        # self.current_state = self.GAMEPLAY
 
         self.spawn_cooldown = 0.0
         self.spawn_cooldown_elapsed_time = 0.0
@@ -43,13 +41,11 @@ class BuildContext:
 
         self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
 
+        self.button_restart = Button(self, 'Restart', Size(60, 40), -60, -50, (255, 255, 0))
+
     def remove_enemy(self, id):
         self.kill_counter += 1
         self.current_enemies = list(filter(lambda e: e.id is not id, self.current_enemies))
-        
-        # if self.total_enemy == 0 and len(self.current_enemies) == 0:
-            # self.current_state = self.GAME_OVER
-            # print("Game Over State Reached")
 
     def tick_next_wave(self):
         from objects.enemy import Enemy
@@ -64,7 +60,22 @@ class BuildContext:
             self.spawn_cooldown_elapsed_time = 0.0
             self.spawn_cooldown = random.random()
             self.total_enemy -= 1
-            self.current_enemies.append(Enemy(self, len(self.current_enemies), self.w if random.choice([True, False]) else -self.w - 150.0))
+            self.current_enemies.append(Enemy(self, len(self.current_enemies), self.w + random.randint(0, 150) if random.choice([True, False]) else -self.w - random.randint(150, 250)))
+    
+    def restart(self):
+        self.current_enemies = []
+
+        self.wave_counter = 1
+        self.kill_counter = 0
+
+        self.current_state = self.GAMEPLAY
+
+        self.spawn_cooldown = 0.0
+        self.spawn_cooldown_elapsed_time = 0.0
+
+        self.total_enemy = 0
+
+        self.dome.health = 100
 
 
     def draw_background(self):
@@ -177,3 +188,6 @@ class BuildContext:
 
         # Draw the score text
         drawText(f'Your Kill : {self.kill_counter}', -95, 0, (255, 255, 255))
+
+        self.button_restart.draw()
+        

@@ -8,9 +8,9 @@ class Enemy:
     def __init__(self, context: BuildContext, id: int, initial_x = 0, initial_y = -70, scale = 0.3):
         self.context = context
         self.id = id
-        self.damage = 3
-        self.health = 200
-        self.speed = 40
+        self.damage = 1
+        self.health = 100
+        self.speed = 30
         self.scale = scale
         self.size = Size(200, 200)
         self.x = initial_x + self.size.width / 2
