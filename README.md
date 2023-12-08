@@ -6,3 +6,4 @@
 Dome Masters merupakan game defense, karakter utama dari Dome Masters adalah sebuah dome, tujuan dari game Dome Masters ini adalah melindungi dome dari serangan kubus yang menyerang dome dengan menembakkan sebuah laser.
 ![title](images/title_screen.png)
 ![gameplay](images/gameplay_2.png)
+![game_over](images/game_over.png)

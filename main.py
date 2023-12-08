@@ -11,8 +11,6 @@ from objects.enemy import *
 
 context = BuildContext()
 
-# print(f'hello? : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782} and {0.0 <= 23.11951371597268 <= 60.0} : {666.6666666666782 <= 696.6666666666782 <= 726.6666666666782 and 0.0 <= 23.11951371597268 <= 60.0}')
-
 def draw():
     context.dome.draw()
     for enemy in context.current_enemies:
@@ -36,10 +34,6 @@ def iterate():
     glTranslatef(context.camera_position[0], context.camera_position[1], context.camera_position[2])
 
 def showScreen():
-    if context.current_state == context.GAME_OVER:
-        # print('Oy mate, it\'s game over, get out from here!')
-        context.show_game_over()
-        return
         
     start_time = time.time()
 
@@ -66,6 +60,9 @@ def showScreen():
     
     if context.current_state is context.GAMEPLAY or context.current_state is context.GAME_OVER:
         context.draw_hud()
+    
+    if context.current_state == context.GAME_OVER:
+        context.show_game_over()
 
     glutSwapBuffers()
 
@@ -96,6 +93,10 @@ def special_keyboard(key, x, y):
     if key in (GLUT_KEY_LEFT, GLUT_KEY_RIGHT):
         context.movement_keys.add(key)
 
+def special_keyboar_up(key, x, y):
+    if key in (GLUT_KEY_LEFT, GLUT_KEY_RIGHT):
+        context.movement_keys.remove(key)
+
 def update_movement():
     for key in context.movement_keys:
         if key == b'a' or key == b'A':
@@ -108,10 +109,6 @@ def update_movement():
             context.dome.weapon.move_right()
 
 def mouse(button, state, x, y):
-    # print(f'{x}, {y}', context.button_play.is_on_click(x, y))
-    # if button == GLUT_LEFT_BUTTON and state == GLUT_UP and x >= 352 and x <= 384 and y >= 487 and y <= 500 and context.current_state == context.TITLE_SCREEN:
-    #     context.current_state = context.ANIMATING_TO_GAMEPLAY
-
     if context.button_play.is_on_click(x, y):
         context.current_state = context.ANIMATING_TO_GAMEPLAY
 
@@ -126,5 +123,6 @@ glutReshapeFunc(reshape)
 glutKeyboardFunc(keyboard)
 glutKeyboardUpFunc(keyboard_up)
 glutSpecialFunc(special_keyboard)
+glutSpecialUpFunc(special_keyboar_up)
 glutMouseFunc(mouse)
 glutMainLoop()

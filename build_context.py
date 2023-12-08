@@ -5,7 +5,6 @@ from math import *
 
 from user_interfaces.text_drawer import *
 from utils.size import *
-from utils.offset import *
 
 class BuildContext:
     TITLE_SCREEN = 0
@@ -46,12 +45,11 @@ class BuildContext:
 
     def remove_enemy(self, id):
         self.kill_counter += 1
-        self.score += 10
         self.current_enemies = list(filter(lambda e: e.id is not id, self.current_enemies))
         
-        if self.total_enemy == 0 and len(self.current_enemies) == 0:
-            self.current_state = self.GAME_OVER
-            print("Game Over State Reached")
+        # if self.total_enemy == 0 and len(self.current_enemies) == 0:
+            # self.current_state = self.GAME_OVER
+            # print("Game Over State Reached")
 
     def tick_next_wave(self):
         from objects.enemy import Enemy
@@ -163,21 +161,19 @@ class BuildContext:
         glPopMatrix()
 
     def show_game_over(self):
-        if self.current_state == self.GAME_OVER:
-           # Draw the game over rectangle
-            glColor3ub(0, 0, 0)  # Hitam
-            glBegin(GL_QUADS)
-            glVertex2f(-200, -100)  # Atas kiri
-            glVertex2f(200, -100)   # Atas kanan
-            glVertex2f(200, 100)    # Bawah kanan
-            glVertex2f(-200, 100)   # Bawah kiri
-            glEnd()
+        # Draw the game over rectangle
+        glPushMatrix()
+        glColor3ub(0, 0, 0)  # Hitam
+        glBegin(GL_QUADS)
+        glVertex2f(-200, -100)  # Atas kiri
+        glVertex2f(200, -100)   # Atas kanan
+        glVertex2f(200, 100)    # Bawah kanan
+        glVertex2f(-200, 100)   # Bawah kiri
+        glEnd()
+        glPopMatrix()
 
-            # Draw the "Game Over" text
-            glColor3f(1.0, 0.0, 0.0)  # Warna merah
-            drawText('Game Over', -50, 0)
+        # Draw the "Game Over" text
+        drawText('Game Over', -95, 50, (255, 0, 0))
 
-            # Draw the score text
-            glColor3f(1.0, 1.0, 1.0)  # Warna putih
-            score_text = f"Your Score: {self.score}"
-            drawText(score_text, -40, 10)
+        # Draw the score text
+        drawText(f'Your Kill : {self.kill_counter}', -95, 0, (255, 255, 255))
