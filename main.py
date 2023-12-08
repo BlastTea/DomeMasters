@@ -36,8 +36,11 @@ def iterate():
     glTranslatef(context.camera_position[0], context.camera_position[1], context.camera_position[2])
 
 def showScreen():
-    if context.current_state is context.GAME_OVER:
-        print('Oy mate, it\'s game over, get out from here!')
+    if context.current_state == context.GAME_OVER:
+        # print('Oy mate, it\'s game over, get out from here!')
+        context.show_game_over()
+        return
+        
     start_time = time.time()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
