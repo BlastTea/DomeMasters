@@ -116,7 +116,7 @@ def special_keyboard(key, x, y):
     if key in (GLUT_KEY_LEFT, GLUT_KEY_RIGHT):
         context.movement_keys.add(key)
 
-def special_keyboar_up(key, x, y):
+def special_keyboard_up(key, x, y):
     if key in (GLUT_KEY_LEFT, GLUT_KEY_RIGHT):
         context.movement_keys.remove(key)
 
@@ -148,6 +148,6 @@ glutReshapeFunc(reshape)
 glutKeyboardFunc(keyboard)
 glutKeyboardUpFunc(keyboard_up)
 glutSpecialFunc(special_keyboard)
-glutSpecialUpFunc(special_keyboar_up)
+glutSpecialUpFunc(special_keyboard_up)
 glutMouseFunc(mouse)
 glutMainLoop()
