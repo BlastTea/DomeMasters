@@ -131,7 +131,6 @@ class Weapon:
     
     def is_shooting_enemy(self, enemy: Enemy):
         if self.is_shooting is False or (self.shooting_enemy is not None and self.shooting_enemy.id is not enemy.id):
-        # if self.is_shooting is False or self.shooting_enemy is not None:      
             return False
 
         laser_x = enemy.distance() * cos(self.orientation_degrees * (pi / 180.0))
@@ -145,18 +144,14 @@ class Weapon:
         # glVertex2f(laser_x, laser_y)
         # glEnd()
         # glPopMatrix()
-        
-        # print(f'isShootingEnemy : {enemy.x - enemy.size.width / 2 * enemy.scale} <= {enemy.x} <= {enemy.x + enemy.size.width / 2 * enemy.scale} and {enemy.y - enemy.size.height / 2 * enemy.scale} <= {laser_y} <= {enemy.y + enemy.size.height / 2 * enemy.scale} : {enemy.x - enemy.size.width / 2 * enemy.scale <= laser_x <= enemy.x + enemy.size.width / 2 * enemy.scale and enemy.y - enemy.size.height / 2 * enemy.scale <= laser_y <=  enemy.y + enemy.size.height / 2 * enemy.scale}')
+
         if enemy.x - enemy.size.width / 2 * enemy.scale <= laser_x <= enemy.x + enemy.size.width / 2 * enemy.scale and enemy.y - enemy.size.height / 2 * enemy.scale <= laser_y <=  enemy.y + enemy.size.height / 2 * enemy.scale:
             self.shooting_enemy = enemy
             enemy.take_damage(self.damage / self.context.frame_per_second)
             
             if not enemy.is_dead():
-                return True
+                return self.shooting_enemy is not None
             
-            # print(f'removeEnemy {enemy.id}')
-            # print(f'left_enemy: {list(map(lambda e: f"{e}", filter(lambda e: e.x <= 0, self.context.current_enemies)))}')
-            # print(f'right_enemy: {list(map(lambda e: f"{e}", filter(lambda e: e.x >= 0, self.context.current_enemies)))}')
             self.context.remove_enemy(enemy.id)
         self.shooting_enemy = None
-        return True
+        return self.shooting_enemy is not None

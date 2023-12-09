@@ -5,7 +5,6 @@ from math import *
 
 from user_interfaces.text_drawer import *
 from utils.size import *
-from utils.offset import *
 
 class BuildContext:
     TITLE_SCREEN = 0
@@ -13,6 +12,7 @@ class BuildContext:
     GAMEPLAY = 2
     ANIMATING_TO_GAMEPLAY = 3
     GAME_OVER = 4
+    PAUSED = 5
 
     def __init__(self):
         from objects.dome import Dome
@@ -29,10 +29,8 @@ class BuildContext:
         self.kill_counter = 0
 
         self.camera_position = [0, -self.h * 2, 0]
-        # self.camera_position = [0, 0, 0]
 
         self.current_state = self.TITLE_SCREEN
-        # self.current_state = self.GAMEPLAY
 
         self.spawn_cooldown = 0.0
         self.spawn_cooldown_elapsed_time = 0.0
@@ -43,7 +41,11 @@ class BuildContext:
 
         self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
 
+<<<<<<< HEAD
         self.is_paused = False
+=======
+        self.button_restart = Button(self, 'Restart', Size(60, 40), -60, -50, (255, 255, 0))
+>>>>>>> 6f21e054aa872ce08b4876d1ee9261ea1204ebbd
 
     def remove_enemy(self, id):
         self.kill_counter += 1
@@ -62,7 +64,22 @@ class BuildContext:
             self.spawn_cooldown_elapsed_time = 0.0
             self.spawn_cooldown = random.random()
             self.total_enemy -= 1
-            self.current_enemies.append(Enemy(self, len(self.current_enemies), self.w if random.choice([True, False]) else -self.w - 150.0))
+            self.current_enemies.append(Enemy(self, len(self.current_enemies), self.w + random.randint(0, 150) if random.choice([True, False]) else -self.w - random.randint(150, 250)))
+    
+    def restart(self):
+        self.current_enemies = []
+
+        self.wave_counter = 1
+        self.kill_counter = 0
+
+        self.current_state = self.GAMEPLAY
+
+        self.spawn_cooldown = 0.0
+        self.spawn_cooldown_elapsed_time = 0.0
+
+        self.total_enemy = 0
+
+        self.dome.health = 100
 
 
     def draw_background(self):
@@ -157,3 +174,24 @@ class BuildContext:
         glVertex2f(-self.w + 1, -self.h + 1)
         glEnd()
         glPopMatrix()
+
+    def show_game_over(self):
+        # Draw the game over rectangle
+        glPushMatrix()
+        glColor3ub(0, 0, 0)  # Hitam
+        glBegin(GL_QUADS)
+        glVertex2f(-200, -100)  # Atas kiri
+        glVertex2f(200, -100)   # Atas kanan
+        glVertex2f(200, 100)    # Bawah kanan
+        glVertex2f(-200, 100)   # Bawah kiri
+        glEnd()
+        glPopMatrix()
+
+        # Draw the "Game Over" text
+        drawText('Game Over', -95, 50, (255, 0, 0))
+
+        # Draw the score text
+        drawText(f'Your Kill : {self.kill_counter}', -95, 0, (255, 255, 255))
+
+        self.button_restart.draw()
+        
