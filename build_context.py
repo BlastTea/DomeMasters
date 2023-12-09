@@ -43,6 +43,8 @@ class BuildContext:
 
         self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
 
+        self.is_paused = False
+
     def remove_enemy(self, id):
         self.kill_counter += 1
         self.current_enemies = list(filter(lambda e: e.id is not id, self.current_enemies))
