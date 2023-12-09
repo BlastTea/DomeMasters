@@ -78,9 +78,6 @@ def showScreen():
     if context.current_state == context.GAME_OVER:
         context.show_game_over()
 
-    if context.current_state is context.GAME_OVER:
-        context.show_game_over()
-
     if context.current_state is context.PAUSED:
         show_pause()
 
