@@ -7,3 +7,4 @@ Dome Masters merupakan game defense, karakter utama dari Dome Masters adalah seb
 ![title](images/title_screen.png)
 ![gameplay](images/gameplay_2.png)
 ![game_over](images/game_over.png)
+![paused](images/paused.png)

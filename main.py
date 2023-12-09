@@ -18,25 +18,18 @@ def draw():
 
 def show_pause():
     glPushMatrix()
-    glLoadIdentity()
-
-    glColor3f(1.0, 1.0, 1.0)  # Warna teks putih
-
-    pause_text = "Game Paused"
-    resume_text = "Press 'p' to resume"
-
-    # Menentukan posisi teks
-    pause_text_x = context.w // 2 - len(pause_text) * 5
-    pause_text_y = context.h // 2 + 20
-
-    resume_text_x = context.w // 2 - len(resume_text) * 5
-    resume_text_y = context.h // 2 - 20
+    glColor3ub(0, 0, 0)  # Hitam
+    glBegin(GL_QUADS)
+    glVertex2f(-200, -100)  # Atas kiri
+    glVertex2f(200, -100)   # Atas kanan
+    glVertex2f(200, 100)    # Bawah kanan
+    glVertex2f(-200, 100)   # Bawah kiri
+    glEnd()
+    glPopMatrix()
 
     # Memanggil fungsi drawText untuk menggambar teks
-    drawText(pause_text, pause_text_x, pause_text_y)
-    drawText(resume_text, resume_text_x, resume_text_y)
-
-    glPopMatrix()
+    drawText('Game Paused', -95, 50)
+    drawText('Press \'p\' to resume', -150, 0)
 
 def iterate():
     glViewport(0, 0, context.w, context.h)
@@ -56,19 +49,6 @@ def iterate():
     glTranslatef(context.camera_position[0], context.camera_position[1], context.camera_position[2])
 
 def showScreen():
-    if context.current_state is context.GAME_OVER:
-        print('Oy mate, it\'s game over, get out from here!')
-    
-    if context.current_state == context.GAMEPLAY:
-        if b'p' in context.movement_keys:
-            context.is_paused = not context.is_paused
-            time.sleep(0.2)
-            if context.is_paused:
-                show_pause(context)
-
-    if context.is_paused:
-        glutSwapBuffers()
-        return
     start_time = time.time()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -98,6 +78,12 @@ def showScreen():
     if context.current_state == context.GAME_OVER:
         context.show_game_over()
 
+    if context.current_state is context.GAME_OVER:
+        context.show_game_over()
+
+    if context.current_state is context.PAUSED:
+        show_pause()
+
     glutSwapBuffers()
 
     frame_time = time.time() - start_time
@@ -117,8 +103,10 @@ def keyboard(key, x, y):
         context.dome.weapon.shoot()
 
     if key in (b'p', b'P'):
-        context.is_paused = not context.is_paused
-        time.sleep(0.2)
+        if context.current_state is context.PAUSED:
+            context.current_state = context.GAMEPLAY
+        else:
+            context.current_state = context.PAUSED
 
 def keyboard_up(key, x, y):
     if key == b' ':

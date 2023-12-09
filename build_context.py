@@ -41,7 +41,7 @@ class BuildContext:
 
         self.button_play = Button(self, 'Play', Size(40, 40), -100, - 400)
 
-        self.is_paused = False
+        self.button_restart = Button(self, 'Restart', Size(60, 40), -60, -50, (255, 255, 0))
 
     def remove_enemy(self, id):
         self.kill_counter += 1
